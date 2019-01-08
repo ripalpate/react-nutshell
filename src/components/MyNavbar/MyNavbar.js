@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Collapse,
   Navbar,
@@ -11,8 +12,19 @@ import {
 import './MyNavbar.scss';
 
 class MyNavbar extends React.Component {
+  static propTypes = {
+    isAuthed: PropTypes.bool,
+    logoutClickEvent: PropTypes.func,
+  }
+
   state = {
     isOpen: false,
+  }
+
+  toggle() {
+    this.setState({
+      isOpen: !this.state.isOpen,
+    });
   }
 
   render() {
@@ -21,7 +33,7 @@ class MyNavbar extends React.Component {
       <div className="my-navbar">
       <Navbar color="dark" dark expand="md">
           <NavbarBrand href="/">Nutshell</NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
+          <NavbarToggler onClick={e => this.toggle(e)} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
