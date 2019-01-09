@@ -10,7 +10,7 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div className='Home'>
+      <div className='Home mx-auto'>
         <div className="card-deck mt-5">
           <div className="card border-dark" id="messages" onClick={this.changeView}>
             <div className="card-body text-center">
