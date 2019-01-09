@@ -50,10 +50,6 @@ class App extends React.Component {
     this.removeListener();
   }
 
-  isAuthenticated = () => {
-    this.setState({ authed: true });
-  }
-
   render() {
     const logoutClickEvent = () => {
       authRequests.logoutUser();
