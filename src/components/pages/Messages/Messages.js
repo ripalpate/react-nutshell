@@ -11,6 +11,9 @@ class Messages extends React.Component {
   componentDidMount() {
     smashMessageRequests.getAllMessagesWithUserInfo()
       .then((messages) => {
+        if (messages.length > 1) {
+          messages.shift(messages.length - 1, messages.length);
+        }
         this.setState({ messages });
       })
       .catch(err => console.log(err));
