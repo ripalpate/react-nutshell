@@ -1,6 +1,6 @@
 import React from 'react';
 import './Messages.scss';
-import messageRequests from '../../../helpers/data/messageRequests';
+import smashMessageRequests from '../../../helpers/data/smashRequests';
 import SingleMessage from '../SingleMessages/SingleMessage';
 
 class Messages extends React.Component {
@@ -9,8 +9,9 @@ class Messages extends React.Component {
   }
 
   componentDidMount() {
-    messageRequests.getAllMessages()
+    smashMessageRequests.getAllMessagesWithUserInfo()
       .then((messages) => {
+        console.log(messages);
         this.setState({ messages });
       })
       .catch(err => console.log(err));
