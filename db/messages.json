@@ -10,5 +10,29 @@
     "message": "The Sky",
     "timestamp": 1528763298536,
     "isEdited": true
+  },
+  "message3": {
+    "uid": "12345",
+    "message": "Blessed!!!",
+    "timestamp": 1528763298536,
+    "isEdited": true
+  },
+  "message4": {
+    "uid": "22222",
+    "message": "I am great",
+    "timestamp": 1528763298536,
+    "isEdited": true
+  },
+  "message5": {
+    "uid": "55555",
+    "message": "Yo Yo!",
+    "timestamp": 1528763298536,
+    "isEdited": true
+  },
+  "message6": {
+    "uid": "77777",
+    "message": "What's goin on?",
+    "timestamp": 1528763298536,
+    "isEdited": true
   }
 } 

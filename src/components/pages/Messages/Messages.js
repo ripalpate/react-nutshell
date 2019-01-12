@@ -13,12 +13,12 @@ class Messages extends React.Component {
   componentDidMount() {
     smashMessageRequests.getAllMessagesWithUserInfo()
       .then((messages) => {
-        if (messages.length > 1) {
+        if (messages.length > 10) {
           messages.shift(messages.length - 1, messages.length);
         }
         this.setState({ messages });
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 
   inputSubmitEvent = (newMessage) => {
@@ -26,7 +26,7 @@ class Messages extends React.Component {
       .then(() => {
         smashMessageRequests.getAllMessagesWithUserInfo()
           .then((messages) => {
-            if (messages.length > 1) {
+            if (messages.length > 10) {
               messages.shift(messages.length - 1, messages.length);
             }
             this.setState({ messages });
@@ -42,11 +42,13 @@ class Messages extends React.Component {
       />
     ));
     return (
-      <div className="Messages">
-        <h2 className="heading">Messages</h2>
-        {singleMessageComponent}
+      <div className= "messagesContainer">
+        <h2 className="heading text-center">Messages</h2>
+        <div className="Messages">
+          {singleMessageComponent}
+        </div>
         <AddEditMessage
-        onSubmit={this.inputSubmitEvent}/>
+        onClick={this.inputSubmitEvent}/>
       </div>
     );
   }

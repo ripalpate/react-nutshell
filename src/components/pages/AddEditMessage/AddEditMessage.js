@@ -1,18 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import authRequests from '../../../helpers/data/authRequests';
 import './AddEditMessage.scss';
 
+const getTimeStamp = moment().valueOf();
 const defaultMessage = {
   uid: '',
   message: '',
-  timestamp: 0,
+  timestamp: getTimeStamp,
   isEdited: false,
 };
 
 class AddEditMessage extends React.Component {
   static propTypes = {
-    onSubmit: PropTypes.func,
+    onClick: PropTypes.func,
   }
 
   state = {
@@ -30,19 +32,19 @@ messageChange = e => this.inputFieldStringState('message', e);
 
 inputSubmit = (e) => {
   e.preventDefault();
-  const { onSubmit } = this.props;
+  const { onClick } = this.props;
   const myMessage = { ...this.state.newMessage };
   myMessage.uid = authRequests.getCurrentUid();
-  onSubmit(myMessage);
+  onClick(myMessage);
   this.setState({ newMessage: defaultMessage });
 }
 
 render() {
   const { newMessage } = this.state;
   return (
-      <div className="input-group mb-3">
-        <div className="input-group-prepend">
-          <button className="btn btn-primary" id="basic-addon1" onSubmit={this.inputSubmit}>send</button>
+      <div className="input-group mt-3 mb-3">
+        <div className="input-group-prepend" onClick={this.inputSubmit}>
+          <button className="btn btn-primary" type="button" id="basic-addon1">send</button>
         </div>
         <input
         type="text"
