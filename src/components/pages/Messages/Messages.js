@@ -2,6 +2,7 @@ import React from 'react';
 import './Messages.scss';
 import smashMessageRequests from '../../../helpers/data/smashRequests';
 import SingleMessage from '../SingleMessages/SingleMessage';
+import AddEditMessage from '../AddEditMessage/AddEditMessage';
 
 class Messages extends React.Component {
   state = {
@@ -30,6 +31,7 @@ class Messages extends React.Component {
       <div className="Messages">
         <h2 className="heading">Messages</h2>
         {singleMessageComponent}
+        <AddEditMessage/>
       </div>
     );
   }
