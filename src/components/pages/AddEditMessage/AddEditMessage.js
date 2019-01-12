@@ -39,6 +39,16 @@ inputSubmit = (e) => {
   this.setState({ newMessage: defaultMessage });
 }
 
+handleEnterInput = (target) => {
+  if (target.key === 'Enter') {
+    const { onKeyUp } = this.props;
+    const myMessage = { ...this.state.newMessage };
+    myMessage.uid = authRequests.getCurrentUid();
+    onKeyUp(myMessage);
+    this.setState({ newMessage: defaultMessage });
+  }
+}
+
 render() {
   const { newMessage } = this.state;
   return (
@@ -54,6 +64,7 @@ render() {
         aria-describedby="message-help"
         value={newMessage.message}
         onChange={this.messageChange}
+        onKeyUp={this.handleEnterInput}
         />
       </div>
   );

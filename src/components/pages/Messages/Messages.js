@@ -48,7 +48,8 @@ class Messages extends React.Component {
           {singleMessageComponent}
         </div>
         <AddEditMessage
-        onClick={this.inputSubmitEvent}/>
+        onClick={this.inputSubmitEvent}
+        onKeyUp={this.inputSubmitEvent}/>
       </div>
     );
   }
