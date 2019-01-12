@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import authRequests from '../../../helpers/data/authRequests';
 import './AddEditMessage.scss';
 
 const defaultMessage = {
@@ -9,6 +11,10 @@ const defaultMessage = {
 };
 
 class AddEditMessage extends React.Component {
+  static propTypes = {
+    onSubmit: PropTypes.func,
+  }
+
   state = {
     newMessage: defaultMessage,
   }
@@ -22,12 +28,21 @@ inputFieldStringState = (name, e) => {
 
 messageChange = e => this.inputFieldStringState('message', e);
 
+inputSubmit = (e) => {
+  e.preventDefault();
+  const { onSubmit } = this.props;
+  const myMessage = { ...this.state.newMessage };
+  myMessage.uid = authRequests.getCurrentUid();
+  onSubmit(myMessage);
+  this.setState({ newMessage: defaultMessage });
+}
+
 render() {
   const { newMessage } = this.state;
   return (
       <div className="input-group mb-3">
         <div className="input-group-prepend">
-          <button className="btn btn-primary" id="basic-addon1">send</button>
+          <button className="btn btn-primary" id="basic-addon1" onSubmit={this.inputSubmit}>send</button>
         </div>
         <input
         type="text"
