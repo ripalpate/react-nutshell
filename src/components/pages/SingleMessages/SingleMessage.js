@@ -22,8 +22,8 @@ class SingleMessage extends React.Component {
     const makeButtons = () => {
       if (message.uid === uid) {
         return (
-            <span className="col text-right">
-              <button className="btn btn-danger" onClick={this.deleteEvent}>
+            <span className="col text-center">
+              <button className="btn btn-danger delete-button" onClick={this.deleteEvent}>
                 <i className="fas fa-trash-alt"></i>
               </button>
             </span>
@@ -33,7 +33,7 @@ class SingleMessage extends React.Component {
     };
 
     return (
-      <div className="singleMessage row mt-3">
+      <div className="singleMessage row pt-2 pb-2">
         <span className="col user">{message.userName}</span>
         <span className="col message">{message.message}</span>
         {makeButtons()}
