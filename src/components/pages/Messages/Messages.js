@@ -2,6 +2,8 @@ import React from 'react';
 import './Messages.scss';
 import smashMessageRequests from '../../../helpers/data/smashRequests';
 import SingleMessage from '../SingleMessages/SingleMessage';
+import AddEditMessage from '../AddEditMessage/AddEditMessage';
+import messageRequests from '../../../helpers/data/messageRequests';
 
 class Messages extends React.Component {
   state = {
@@ -11,12 +13,25 @@ class Messages extends React.Component {
   componentDidMount() {
     smashMessageRequests.getAllMessagesWithUserInfo()
       .then((messages) => {
-        if (messages.length > 1) {
+        if (messages.length > 10) {
           messages.shift(messages.length - 1, messages.length);
         }
         this.setState({ messages });
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
+  }
+
+  inputSubmitEvent = (newMessage) => {
+    messageRequests.createMessage(newMessage)
+      .then(() => {
+        smashMessageRequests.getAllMessagesWithUserInfo()
+          .then((messages) => {
+            if (messages.length > 10) {
+              messages.shift(messages.length - 1, messages.length);
+            }
+            this.setState({ messages });
+          });
+      }).catch(err => console.error(err));
   }
 
   render() {
@@ -27,9 +42,14 @@ class Messages extends React.Component {
       />
     ));
     return (
-      <div className="Messages">
-        <h2 className="heading">Messages</h2>
-        {singleMessageComponent}
+      <div className= "messagesContainer">
+        <h2 className="heading text-center">Messages</h2>
+        <div className="Messages">
+          {singleMessageComponent}
+        </div>
+        <AddEditMessage
+        onClick={this.inputSubmitEvent}
+        onKeyUp={this.inputSubmitEvent}/>
       </div>
     );
   }
