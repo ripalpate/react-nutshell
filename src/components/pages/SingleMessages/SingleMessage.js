@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './SingleMessage.scss';
 import messagesShape from '../../../helpers/propz/messagesShape';
 import authRequests from '../../../helpers/data/authRequests';
@@ -6,6 +7,13 @@ import authRequests from '../../../helpers/data/authRequests';
 class SingleMessage extends React.Component {
   static propTypes = {
     message: messagesShape,
+    deleteSingleMessage: PropTypes.func,
+  }
+
+  deleteEvent = (e) => {
+    e.preventDefault();
+    const { deleteSingleMessage, message } = this.props;
+    deleteSingleMessage(message.id);
   }
 
   render() {
@@ -15,7 +23,7 @@ class SingleMessage extends React.Component {
       if (message.uid === uid) {
         return (
             <span className="col text-right">
-              <button className="btn btn-danger">
+              <button className="btn btn-danger" onClick={this.deleteEvent}>
                 <i className="fas fa-trash-alt"></i>
               </button>
             </span>
