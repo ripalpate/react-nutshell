@@ -8,6 +8,8 @@ import messageRequests from '../../../helpers/data/messageRequests';
 class Messages extends React.Component {
   state = {
     messages: [],
+    isEditing: false,
+    editId: '-1',
   }
 
   getMessagesWithUserName = () => {
@@ -39,12 +41,15 @@ class Messages extends React.Component {
       }).catch(err => console.error(err));
   }
 
+  passMessageToEdit = messageId => this.setState({ isEditing: true, editId: messageId });
+
   render() {
     const singleMessageComponent = this.state.messages.map(message => (
       <SingleMessage
       message={message}
       key={message.id}
       deleteSingleMessage = {this.deleteOne}
+      passMessageToEdit = {this.passMessageToEdit}
       />
     ));
     return (
@@ -55,7 +60,10 @@ class Messages extends React.Component {
         </div>
         <AddEditMessage
         onClick={this.inputSubmitEvent}
-        onKeyUp={this.inputSubmitEvent}/>
+        onKeyUp={this.inputSubmitEvent}
+        isEditing={this.state.isEditing}
+        editId={this.state.editId}
+        />
       </div>
     );
   }

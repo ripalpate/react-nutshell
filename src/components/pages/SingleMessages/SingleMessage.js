@@ -8,12 +8,19 @@ class SingleMessage extends React.Component {
   static propTypes = {
     message: messagesShape,
     deleteSingleMessage: PropTypes.func,
+    passMessageToEdit: PropTypes.func,
   }
 
   deleteEvent = (e) => {
     e.preventDefault();
     const { deleteSingleMessage, message } = this.props;
     deleteSingleMessage(message.id);
+  }
+
+  editEvent = (e) => {
+    e.preventDefault();
+    const { passMessageToEdit, message } = this.props;
+    passMessageToEdit(message.id);
   }
 
   render() {
@@ -29,7 +36,7 @@ class SingleMessage extends React.Component {
               </button>
             </span>
             <span className="">
-              <button className="btn btn-primary edit-button ml-3">
+              <button className="btn btn-primary edit-button ml-3" onClick={this.editEvent}>
                 <i className="fas fa-pencil-alt"></i>
               </button>
             </span>

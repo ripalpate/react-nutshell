@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import authRequests from '../../../helpers/data/authRequests';
 import './AddEditMessage.scss';
+import messageRequests from '../../../helpers/data/messageRequests';
 
 const getTimeStamp = moment().valueOf();
 const defaultMessage = {
@@ -15,10 +16,23 @@ const defaultMessage = {
 class AddEditMessage extends React.Component {
   static propTypes = {
     onClick: PropTypes.func,
+    isEditing: PropTypes.bool,
+    editId: PropTypes.string,
   }
 
   state = {
     newMessage: defaultMessage,
+  }
+
+  componentDidUpdate(prevProps) {
+    const { isEditing, editId } = this.props;
+    if (prevProps !== this.props && isEditing) {
+      messageRequests.getSingleMessage(editId)
+        .then((message) => {
+          this.setState({newMessage: message.data });
+        })
+        .catch(err => console.error(err));
+    }
   }
 
 inputFieldStringState = (name, e) => {
