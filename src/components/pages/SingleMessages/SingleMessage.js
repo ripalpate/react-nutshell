@@ -22,11 +22,18 @@ class SingleMessage extends React.Component {
     const makeButtons = () => {
       if (message.uid === uid) {
         return (
-            <span className="col text-center">
+          <div className= "col text-center">
+            <span className="">
               <button className="btn btn-danger delete-button" onClick={this.deleteEvent}>
                 <i className="fas fa-trash-alt"></i>
               </button>
             </span>
+            <span className="">
+              <button className="btn btn-primary edit-button ml-3">
+                <i className="fas fa-pencil-alt"></i>
+              </button>
+            </span>
+          </div>
         );
       }
       return <span className="col"></span>;
