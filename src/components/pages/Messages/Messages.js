@@ -28,10 +28,18 @@ class Messages extends React.Component {
   }
 
   inputSubmitEvent = (newMessage) => {
-    messageRequests.createMessage(newMessage)
-      .then(() => {
-        this.getMessagesWithUserName();
-      }).catch(err => console.error(err));
+    const { isEditing, editId } = this.state;
+    if (isEditing) {
+      messageRequests.updateMessage(editId, newMessage)
+        .then(() => {
+          this.getMessagesWithUserName();
+        }).catch(err => console.error(err));
+    } else {
+      messageRequests.createMessage(newMessage)
+        .then(() => {
+          this.getMessagesWithUserName();
+        }).catch(err => console.error(err));
+    }
   }
 
   deleteOne = (messageId) => {
