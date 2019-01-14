@@ -10,7 +10,7 @@ class Messages extends React.Component {
     messages: [],
   }
 
-  componentDidMount() {
+  getMessagesWithUserName = () => {
     smashMessageRequests.getAllMessagesWithUserInfo()
       .then((messages) => {
         if (messages.length > 10) {
@@ -21,29 +21,21 @@ class Messages extends React.Component {
       .catch(err => console.error(err));
   }
 
+  componentDidMount() {
+    this.getMessagesWithUserName();
+  }
+
   inputSubmitEvent = (newMessage) => {
     messageRequests.createMessage(newMessage)
       .then(() => {
-        smashMessageRequests.getAllMessagesWithUserInfo()
-          .then((messages) => {
-            if (messages.length > 10) {
-              messages.shift(messages.length - 1, messages.length);
-            }
-            this.setState({ messages });
-          });
+        this.getMessagesWithUserName();
       }).catch(err => console.error(err));
   }
 
   deleteOne = (messageId) => {
     messageRequests.deleteMessage(messageId)
       .then(() => {
-        smashMessageRequests.getAllMessagesWithUserInfo()
-          .then((messages) => {
-            if (messages.length > 10) {
-              messages.shift(messages.length - 1, messages.length);
-            }
-            this.setState({ messages });
-          });
+        this.getMessagesWithUserName();
       }).catch(err => console.error(err));
   }
 
