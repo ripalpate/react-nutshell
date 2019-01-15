@@ -45,13 +45,28 @@ class SingleMessage extends React.Component {
       }
       return <span className="col"></span>;
     };
+    const makeEdited = () => {
+      if (this.props.message.isEdited === true) {
+        return (
+          <div className="singleMessage row pt-2 pb-2">
+            <span className="col user">{message.userName}</span>
+            <span className="col message">{message.message}</span>
+            {makeButtons()}
+            <small className="text-muted">Edited</small>
+          </div>
+        );
+      }
+      return (
+          <div className="singleMessage row pt-2 pb-2">
+            <span className="col user">{message.userName}</span>
+            <span className="col message">{message.message}</span>
+            {makeButtons()}
+          </div>
+      );
+    };
 
     return (
-      <div className="singleMessage row pt-2 pb-2">
-        <span className="col user">{message.userName}</span>
-        <span className="col message">{message.message}</span>
-        {makeButtons()}
-      </div>
+      makeEdited()
     );
   }
 }

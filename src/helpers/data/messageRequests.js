@@ -31,7 +31,6 @@ const deleteMessage = messageId => axios.delete(`${firebaseUrl}/messages/${messa
 
 const updateMessage = (messageId, message) => axios.put(`${firebaseUrl}/messages/${messageId}.json`, message);
 
-
 export default {
   getAllMessages,
   createMessage,

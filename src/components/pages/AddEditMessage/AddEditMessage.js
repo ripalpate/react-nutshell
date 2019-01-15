@@ -5,11 +5,10 @@ import authRequests from '../../../helpers/data/authRequests';
 import './AddEditMessage.scss';
 import messageRequests from '../../../helpers/data/messageRequests';
 
-const getTimeStamp = moment().valueOf();
 const defaultMessage = {
   uid: '',
   message: '',
-  timestamp: getTimeStamp,
+  timestamp: 0,
   isEdited: false,
 };
 
@@ -33,11 +32,26 @@ inputFieldStringState = (name, e) => {
 
 messageChange = e => this.inputFieldStringState('message', e);
 
+settingIsEdited = () => {
+  const myMessage = this.state.newMessage;
+  myMessage.uid = authRequests.getCurrentUid();
+  if (this.props.isEditing === false) {
+    myMessage.timestamp = moment().valueOf();
+  } else {
+    myMessage.isEdited = true;
+  }
+}
+
 inputSubmit = (e) => {
   e.preventDefault();
   const { onClick } = this.props;
   const myMessage = { ...this.state.newMessage };
   myMessage.uid = authRequests.getCurrentUid();
+  if (this.props.isEditing === false) {
+    myMessage.timestamp = moment().valueOf();
+  } else {
+    myMessage.isEdited = true;
+  }
   onClick(myMessage);
   this.setState({ newMessage: defaultMessage });
 }
@@ -47,6 +61,11 @@ handleEnterInput = (target) => {
     const { onKeyUp } = this.props;
     const myMessage = { ...this.state.newMessage };
     myMessage.uid = authRequests.getCurrentUid();
+    if (this.props.isEditing === false) {
+      myMessage.timestamp = moment().valueOf();
+    } else {
+      myMessage.isEdited = true;
+    }
     onKeyUp(myMessage);
     this.setState({ newMessage: defaultMessage });
   }
