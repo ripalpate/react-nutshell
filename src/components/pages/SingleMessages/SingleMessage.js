@@ -49,10 +49,9 @@ class SingleMessage extends React.Component {
       if (this.props.message.isEdited === true) {
         return (
           <div className="singleMessage row pt-2 pb-2">
-            <span className="col user">{message.userName}</span>
+            <span className="col user">{message.userName}<small className="text-muted edited-text">Edited</small></span>
             <span className="col message">{message.message}</span>
             {makeButtons()}
-            <small className="text-muted">Edited</small>
           </div>
         );
       }

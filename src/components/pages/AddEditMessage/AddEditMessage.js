@@ -88,6 +88,7 @@ render() {
         value={newMessage.message}
         onChange={this.messageChange}
         onKeyUp={this.handleEnterInput}
+        autoFocus
         />
       </div>
   );
