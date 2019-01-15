@@ -32,8 +32,8 @@ inputFieldStringState = (name, e) => {
 
 messageChange = e => this.inputFieldStringState('message', e);
 
-settingIsEdited = () => {
-  const myMessage = this.state.newMessage;
+settingIsEdited = (myText) => {
+  const myMessage = myText;
   myMessage.uid = authRequests.getCurrentUid();
   if (this.props.isEditing === false) {
     myMessage.timestamp = moment().valueOf();
@@ -46,12 +46,7 @@ inputSubmit = (e) => {
   e.preventDefault();
   const { onClick } = this.props;
   const myMessage = { ...this.state.newMessage };
-  myMessage.uid = authRequests.getCurrentUid();
-  if (this.props.isEditing === false) {
-    myMessage.timestamp = moment().valueOf();
-  } else {
-    myMessage.isEdited = true;
-  }
+  this.settingIsEdited(myMessage);
   onClick(myMessage);
   this.setState({ newMessage: defaultMessage });
 }
@@ -60,12 +55,7 @@ handleEnterInput = (target) => {
   if (target.key === 'Enter') {
     const { onKeyUp } = this.props;
     const myMessage = { ...this.state.newMessage };
-    myMessage.uid = authRequests.getCurrentUid();
-    if (this.props.isEditing === false) {
-      myMessage.timestamp = moment().valueOf();
-    } else {
-      myMessage.isEdited = true;
-    }
+    this.settingIsEdited(myMessage);
     onKeyUp(myMessage);
     this.setState({ newMessage: defaultMessage });
   }
