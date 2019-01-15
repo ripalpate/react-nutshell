@@ -24,17 +24,6 @@ class AddEditMessage extends React.Component {
     newMessage: defaultMessage,
   }
 
-  componentDidUpdate(prevProps) {
-    const { isEditing, editId } = this.props;
-    if (prevProps !== this.props && isEditing) {
-      messageRequests.getSingleMessage(editId)
-        .then((message) => {
-          this.setState({newMessage: message.data });
-        })
-        .catch(err => console.error(err));
-    }
-  }
-
 inputFieldStringState = (name, e) => {
   e.preventDefault();
   const tempMessage = { ...this.state.newMessage };
@@ -60,6 +49,17 @@ handleEnterInput = (target) => {
     myMessage.uid = authRequests.getCurrentUid();
     onKeyUp(myMessage);
     this.setState({ newMessage: defaultMessage });
+  }
+}
+
+componentDidUpdate(prevProps) {
+  const { isEditing, editId } = this.props;
+  if (prevProps !== this.props && isEditing) {
+    messageRequests.getSingleMessage(editId)
+      .then((message) => {
+        this.setState({ newMessage: message.data });
+      })
+      .catch(err => console.error(err));
   }
 }
 

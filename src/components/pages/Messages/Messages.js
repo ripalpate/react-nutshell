@@ -16,7 +16,7 @@ class Messages extends React.Component {
     smashMessageRequests.getAllMessagesWithUserInfo()
       .then((messages) => {
         if (messages.length > 10) {
-          messages.shift(messages.length - 1, messages.length);
+          messages.splice(0, messages.length - 10);
         }
         this.setState({ messages });
       })
@@ -32,7 +32,10 @@ class Messages extends React.Component {
     if (isEditing) {
       messageRequests.updateMessage(editId, newMessage)
         .then(() => {
-          this.getMessagesWithUserName();
+          smashMessageRequests.getAllMessagesWithUserInfo()
+            .then((messages) => {
+              this.setState({ messages, isEditing: false, editId: '-1' });
+            });
         }).catch(err => console.error(err));
     } else {
       messageRequests.createMessage(newMessage)
