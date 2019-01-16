@@ -8,13 +8,15 @@ import messageRequests from '../../../helpers/data/messageRequests';
 class Messages extends React.Component {
   state = {
     messages: [],
+    isEditing: false,
+    editId: '-1',
   }
 
   getMessagesWithUserName = () => {
     smashMessageRequests.getAllMessagesWithUserInfo()
       .then((messages) => {
         if (messages.length > 10) {
-          messages.shift(messages.length - 1, messages.length);
+          messages.splice(0, messages.length - 10);
         }
         this.setState({ messages });
       })
@@ -26,10 +28,21 @@ class Messages extends React.Component {
   }
 
   inputSubmitEvent = (newMessage) => {
-    messageRequests.createMessage(newMessage)
-      .then(() => {
-        this.getMessagesWithUserName();
-      }).catch(err => console.error(err));
+    const { isEditing, editId } = this.state;
+    if (isEditing) {
+      messageRequests.updateMessage(editId, newMessage)
+        .then(() => {
+          smashMessageRequests.getAllMessagesWithUserInfo()
+            .then((messages) => {
+              this.setState({ messages, isEditing: false, editId: '-1' });
+            });
+        }).catch(err => console.error(err));
+    } else {
+      messageRequests.createMessage(newMessage)
+        .then(() => {
+          this.getMessagesWithUserName();
+        }).catch(err => console.error(err));
+    }
   }
 
   deleteOne = (messageId) => {
@@ -39,12 +52,15 @@ class Messages extends React.Component {
       }).catch(err => console.error(err));
   }
 
+  passMessageToEdit = messageId => this.setState({ isEditing: true, editId: messageId });
+
   render() {
     const singleMessageComponent = this.state.messages.map(message => (
       <SingleMessage
       message={message}
       key={message.id}
       deleteSingleMessage = {this.deleteOne}
+      passMessageToEdit = {this.passMessageToEdit}
       />
     ));
     return (
@@ -55,7 +71,10 @@ class Messages extends React.Component {
         </div>
         <AddEditMessage
         onClick={this.inputSubmitEvent}
-        onKeyUp={this.inputSubmitEvent}/>
+        onKeyUp={this.inputSubmitEvent}
+        isEditing={this.state.isEditing}
+        editId={this.state.editId}
+        />
       </div>
     );
   }

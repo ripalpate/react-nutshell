@@ -3,18 +3,20 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import authRequests from '../../../helpers/data/authRequests';
 import './AddEditMessage.scss';
+import messageRequests from '../../../helpers/data/messageRequests';
 
-const getTimeStamp = moment().valueOf();
 const defaultMessage = {
   uid: '',
   message: '',
-  timestamp: getTimeStamp,
+  timestamp: 0,
   isEdited: false,
 };
 
 class AddEditMessage extends React.Component {
   static propTypes = {
     onClick: PropTypes.func,
+    isEditing: PropTypes.bool,
+    editId: PropTypes.string,
   }
 
   state = {
@@ -30,11 +32,21 @@ inputFieldStringState = (name, e) => {
 
 messageChange = e => this.inputFieldStringState('message', e);
 
+settingIsEdited = (myText) => {
+  const myMessage = myText;
+  myMessage.uid = authRequests.getCurrentUid();
+  if (this.props.isEditing === false) {
+    myMessage.timestamp = moment().valueOf();
+  } else {
+    myMessage.isEdited = true;
+  }
+}
+
 inputSubmit = (e) => {
   e.preventDefault();
   const { onClick } = this.props;
   const myMessage = { ...this.state.newMessage };
-  myMessage.uid = authRequests.getCurrentUid();
+  this.settingIsEdited(myMessage);
   onClick(myMessage);
   this.setState({ newMessage: defaultMessage });
 }
@@ -43,9 +55,20 @@ handleEnterInput = (target) => {
   if (target.key === 'Enter') {
     const { onKeyUp } = this.props;
     const myMessage = { ...this.state.newMessage };
-    myMessage.uid = authRequests.getCurrentUid();
+    this.settingIsEdited(myMessage);
     onKeyUp(myMessage);
     this.setState({ newMessage: defaultMessage });
+  }
+}
+
+componentDidUpdate(prevProps) {
+  const { isEditing, editId } = this.props;
+  if (prevProps !== this.props && isEditing) {
+    messageRequests.getSingleMessage(editId)
+      .then((message) => {
+        this.setState({ newMessage: message.data });
+      })
+      .catch(err => console.error(err));
   }
 }
 
@@ -65,6 +88,7 @@ render() {
         value={newMessage.message}
         onChange={this.messageChange}
         onKeyUp={this.handleEnterInput}
+        autoFocus
         />
       </div>
   );
